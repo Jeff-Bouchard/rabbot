@@ -139,7 +139,7 @@ function getReply (channel, serializers, raw, replyQueue, connectionName) {
         type: replyType,
         contentType: contentType,
         contentEncoding: 'utf8',
-        correlationId: raw.properties.messageId,
+        correlationId: raw.properties.correlationId,
         timestamp: options && options.timestamp ? options.timestamp : Date.now(),
         replyTo: replyQueue === false ? undefined : replyQueue,
         headers: options && options.headers ? options.headers : {}

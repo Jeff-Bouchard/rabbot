@@ -443,7 +443,9 @@ Broker.prototype.purgeQueue = function (queueName, connectionName = DEFAULT) {
 
 Broker.prototype.request = function (exchangeName, options = {}, notify, connectionName = DEFAULT) {
   const requestId = uuid.v1();
+  const correlationId = uuid.v4();
   options.messageId = requestId;
+  options.correlationId = correlationId;
   options.connectionName = options.connectionName || connectionName;
 
   if (!this.connections[ options.connectionName ]) {
@@ -463,7 +465,7 @@ Broker.prototype.request = function (exchangeName, options = {}, notify, connect
         }, replyTimeout);
         const scatter = options.expect;
         let remaining = options.expect;
-        const subscription = responses.subscribe(requestId, message => {
+        const subscription = responses.subscribe(correlationId, message => {
           const end = scatter
             ? --remaining <= 0
             : message.properties.headers[ 'sequence_end' ];
