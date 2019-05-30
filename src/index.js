@@ -443,7 +443,7 @@ Broker.prototype.purgeQueue = function (queueName, connectionName = DEFAULT) {
 
 Broker.prototype.request = function (exchangeName, options = {}, notify, connectionName = DEFAULT) {
   const requestId = uuid.v1();
-  const correlationId = uuid.v4();
+  const correlationId = options.correlationId || uuid.v4();
   options.messageId = requestId;
   options.correlationId = correlationId;
   options.connectionName = options.connectionName || connectionName;
